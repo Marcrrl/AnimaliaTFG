@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" style="position: absolute;"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center" style="margin-left: 0px; margin-right: 20px;">
+      Detalles de la Empresa
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="empresa">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ empresa.nombre }}</ion-card-title>
+      <ion-card-subtitle>{{ empresa.tipo }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Dirección</ion-label>
+          <ion-text>{{ empresa.direccion }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Teléfono</ion-label>
+          <ion-text>{{ empresa.telefono }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-text>{{ empresa.email }}</ion-text>
+        </ion-item>
+
+        <ion-item *ngIf="empresa.url_web">
+          <ion-label position="stacked">Sitio Web</ion-label>
+          <ion-text>
+            <a [href]="empresa.url_web" target="_blank">{{ empresa.url_web }}</a>
+          </ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Fecha de Creación</ion-label>
+          <ion-text>{{ empresa.fecha_creacion | date }}</ion-text>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+<!-- Contenedor del mapa, solo se muestra cuando el mapa está inicializado -->
+<div id="map" *ngIf="mapInitialized" style="height: 200px; width: 100%"></div>
+
+
+
+</ion-content>

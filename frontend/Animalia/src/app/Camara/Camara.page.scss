@@ -1,0 +1,13 @@
+.contenedor-fotos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* Espacio entre imágenes */
+}
+
+.foto-rescate {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}

@@ -1,0 +1,17 @@
+@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+
+#map {
+  width: 100%; /* Ajusta el
+ tamaño según tus necesidades */
+  height: 100%; /*
+ Ajusta el tamaño según tus necesidades */
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:
+ translate(-50%, -50%);
+  border: 1px solid
+ #ccc; /* Opcional: para ver los bordes del
+ mapa */
+}

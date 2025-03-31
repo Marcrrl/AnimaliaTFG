@@ -1,0 +1,111 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button color="danger" (click)="cerrarSesion()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Perfil
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="camposActivos" (click)="guardarDatos()">
+        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="camposActivos" (click)="cancelarCambios()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!camposActivos" (click)="activarCampos()">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Mis Fotos</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)"><ion-icon name="close"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-card *ngFor="let imagen of imagenesUsuario">
+          <ion-img [src]="imagen.url" [alt]="imagen.descripcion || 'Imagen de usuario'"></ion-img>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-content color="light" class="ion-text-center">
+    <div class="profile-container">
+      <div class="profile-image">
+        <img alt="Avatar" [src]="imagenPerfil" />
+      </div>
+      <ion-button *ngIf="camposActivos" fill="clear" class="upload-button">
+        <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
+        <input type="file" (change)="subirImagen($event)" class="upload-input">
+      </ion-button>
+      <ion-badge color="success" class="rescues-badge">
+        {{ usuario?.cantidad_rescates }}
+      </ion-badge>
+    </div>
+
+    <ion-list [inset]="true">
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-input id="nombre" labelPlacement="stacked" label="Nombre" [value]="usuario?.nombre"
+                [disabled]="!camposActivos"></ion-input>
+            </ion-col>
+            <ion-col size="6">
+              <ion-input id="apellido" labelPlacement="stacked" label="Apellidos" [value]="usuario?.apellido"
+                [disabled]="!camposActivos"></ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-input id="email" labelPlacement="stacked" label="Email" [value]="usuario?.email"
+          [disabled]="!camposActivos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input id="telefono" labelPlacement="stacked" label="Teléfono" [value]="usuario?.telefono"
+          [disabled]="!camposActivos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input id="direccion" labelPlacement="stacked" label="Dirección" [value]="usuario?.direccion"
+          [disabled]="!camposActivos"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="mostrarCampoContrasena">
+        <ion-input id="nuevaContrasena" labelPlacement="stacked" label="Nueva Contraseña" type="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button *ngIf="!mostrarCampoContrasena" color="warning" (click)="toggleCampoContrasena()">Cambiar
+      Contraseña</ion-button>
+    <ion-button *ngIf="mostrarCampoContrasena" color="danger" (click)="toggleCampoContrasena()">Cancelar</ion-button>
+    <ion-button *ngIf="mostrarCampoContrasena" color="success" (click)="confirmarCambioContrasena()">Confirmar Cambio de
+      Contraseña</ion-button>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" style="padding: 2px;" *ngFor="let imagen of imagenesUsuario">
+          <ion-card style="margin: 0;">
+            <ion-img [src]="imagen.url" [alt]="imagen.descripcion || 'Imagen de usuario'"></ion-img>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!--<ion-button (click)="setOpen(true)" expand="block" shape="round" style="margin-top: 20px;">
+      Ver más fotos
+    </ion-button>-->
+
+  </ion-content>
+</ion-content>

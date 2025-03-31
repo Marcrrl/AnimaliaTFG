@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" style=" position: absolute;"></ion-back-button>
+    </ion-buttons>
+    <ion-title  class="ion-text-center" style="margin-left: 0px; margin-right: 20px;">Detalles del Animal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="animal">
+  <div class="d-flex justify-content-center">
+    <ion-img [src]="imagen" class="img-fluid img-custom" [alt]="animal.nombre_comun"></ion-img>
+  </div>
+
+
+
+
+    <ion-card-header class="border-top mt-1 pb-0">
+      <ion-card-title><strong>{{ animal.nombre_comun }}</strong></ion-card-title>
+      <ion-card-subtitle>Especie:  {{ animal.especie }}</ion-card-subtitle>
+    </ion-card-header>
+<ion-card>
+    <ion-card-content>
+      <ion-card-title >Descripción:<br> </ion-card-title>
+      <ion-card-subtitle *ngIf="this.tipo=='animal'">{{ animal.descripcion }}</ion-card-subtitle>
+      <ion-card-subtitle *ngIf="this.tipo=='foto'">{{ foto.descripcion }}</ion-card-subtitle>
+    <br>
+      <ion-card-title >Estado Conservación:<br> </ion-card-title>
+      <ion-card-subtitle >{{ animal.estado_conservacion }}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

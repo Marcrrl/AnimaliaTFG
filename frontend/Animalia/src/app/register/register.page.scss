@@ -1,0 +1,115 @@
+.bg-fennec {
+  --background: url('../../assets/img/fennec.jpg') center/cover no-repeat fixed;
+  --background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .half {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .left-half {
+    width: 100%;
+    height: 100%;
+    box-shadow: 5px 5px 5px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .right-half {
+    width: 100%;
+    height: 100%;
+  }
+
+  .center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    border-radius: 50%;
+  }
+}
+
+@media (max-width: 2560px) {
+  .half {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  
+  .left-half {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .right-half {
+    width: 100%;
+    height: 100%;
+    
+  }
+
+  .center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    box-shadow: 5px 5px 5px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    z-index: 2;
+    
+  }
+}
+
+ion-button {
+  --border-color: #000000;
+}
+
+.custom-toolbar {
+  position: relative;
+  ion-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.custom-button {
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  background-color: #4caf50;
+}
+
+.custom-button:hover {
+  background-color: #0056b3;
+}
+
+.form-floating{
+  color: #000000;
+}

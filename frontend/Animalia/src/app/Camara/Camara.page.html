@@ -1,0 +1,103 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center">
+    <ion-title>
+      Cámara
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+
+  <!-- Capturar Foto -->
+  <ion-item>
+    <ion-label position="stacked">Foto</ion-label>
+    <ion-button expand="full" (click)="takePicture()">Tomar Foto</ion-button>
+  </ion-item>
+  <img *ngIf="foto" [src]="foto" class="preview-image" />
+
+
+  <!-- Select para cambiar el ID del animal -->
+  <ion-item>
+    <ion-label position="floating">Seleccionar tipo animal</ion-label>
+    <ion-select [(ngModel)]="animalSeleccionadoId" (ionChange)="filtrarRescates()">
+      <ion-select-option *ngFor="let animal of animales" [value]="animal.id">
+        {{ animal.nombre_comun }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+
+  <!-- Descripción -->
+  <ion-item>
+    <ion-label position="stacked">Descripción</ion-label>
+    <ion-textarea [(ngModel)]="descripcion"></ion-textarea>
+  </ion-item>
+
+  <!-- Ubicación -->
+  <ion-item>
+    <ion-label position="stacked">Ubicación</ion-label>
+    <ion-textarea [(ngModel)]="ubicacion"></ion-textarea>
+  </ion-item>
+
+  <!-- Estado del animal -->
+  <ion-item>
+    <ion-label position="floating">Estado del Animal</ion-label>
+    <ion-select [(ngModel)]="estadoAnimal">
+      <ion-select-option *ngFor="let option of estadoOpciones" [value]="option">
+        {{ option }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+
+
+    <h3 style="margin-top: 20px;">Rescates</h3>
+
+
+
+  <!-- Mostrar los rescates filtrados con sus fotos -->
+<ion-list *ngIf="rescatesFiltrados.length > 0">
+  <ion-item *ngFor="let rescate of rescatesFiltrados" (click)="onRescateClick(rescate.id)">
+    <ion-label>
+      <h2>{{ rescate.estado_rescate }}</h2>
+      <p>{{rescate.id}}</p>
+    </ion-label>
+
+    <!-- Mostrar las fotos del rescate -->
+    <ion-card *ngIf="rescate.fotos && rescate.fotos.length > 0">
+      <ion-card-header>
+        <ion-card-title>Fotos del Rescate</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="contenedor-fotos">
+          <img *ngFor="let foto of rescate.fotos" [src]="getImagen(foto)" [alt]="foto.descripcion" class="foto-rescate" />
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+</ion-list>
+
+
+  <ion-item *ngIf="rescatesFiltrados.length === 0 && animalSeleccionadoId">
+    <ion-label>No hay rescates para este animal.</ion-label>
+  </ion-item>
+
+
+
+
+  <ion-button expand="full" *ngIf="rescateId" (click)="resetRescateSeleccionadoId()" color="danger">
+    Eliminar Seleccion
+  </ion-button>
+
+  <!-- Descripción -->
+  <!-- <ion-item>
+    <ion-label position="stacked">Rescate ID</ion-label>
+    <ion-textarea [(ngModel)]="rescateId"></ion-textarea>
+  </ion-item> -->
+
+
+  <p>Rescate a editar: {{ rescateId }}</p>
+  <ion-button expand="full" (click)="subirRescate()">
+    Subir rescate
+  </ion-button>
+</ion-content>

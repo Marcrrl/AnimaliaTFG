@@ -1,0 +1,35 @@
+$primary: #4caf50;
+
+.custom-toolbar {
+  position: relative;
+  ion-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.circle-green {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.circle-red {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+ion-button.main-button {
+  color: white !important;
+  --background: linear-gradient(to bottom, #4caf50, #388e3c) !important;
+}
+

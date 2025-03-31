@@ -1,0 +1,364 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center custom-toolbar">
+    <ion-title>Gestion Admin</ion-title>
+    <ion-buttons slot="start" *ngIf="currentView">
+      <ion-button (click)="goBack()"><ion-icon name="arrow-undo-outline"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid *ngIf="!currentView">
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="showList('empresas')" class="main-button" style="height: 40vh;">Gestionar Empresas</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="showList('animales')" class="main-button" style="height: 40vh;">Gestionar Animales</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="showList('usuarios')" class="main-button" style="height: 40vh;">Gestionar Usuarios</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="showList('rescates')" class="main-button" style="height: 40vh;">Gestionar Rescates</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div *ngIf="currentView === 'usuarios'">
+    <div style="text-align: center;">
+      <ion-button (click)="showAddUserForm()">Añadir Usuario</ion-button>
+    </div>
+    <div *ngIf="showForm">
+      <form (submit)="addUsuario()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="newUsuario.nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Apellido</ion-label>
+          <ion-input [(ngModel)]="newUsuario.apellido" name="apellido" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input [(ngModel)]="newUsuario.email" name="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input [(ngModel)]="newUsuario.password" name="password" type="password" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input [(ngModel)]="newUsuario.telefono" name="telefono" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input [(ngModel)]="newUsuario.direccion" name="direccion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Tipo Usuario</ion-label>
+          <ion-select [(ngModel)]="newUsuario.tipoUsuario" name="tipoUsuario" required>
+            <ion-select-option value="USER">USER</ion-select-option>
+            <ion-select-option value="ADMIN">ADMIN</ion-select-option>
+            <ion-select-option value="EMPRESA">EMPRESA</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelAddUser()">Cancelar</ion-button>
+      </form>
+    </div>
+    <div *ngIf="showUpdateForm">
+      <form (submit)="updateUsuario()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="selectedUsuario.nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Apellido</ion-label>
+          <ion-input [(ngModel)]="selectedUsuario.apellido" name="apellido" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input [(ngModel)]="selectedUsuario.email" name="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input [(ngModel)]="selectedUsuario.telefono" name="telefono" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input [(ngModel)]="selectedUsuario.direccion" name="direccion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Tipo Usuario</ion-label>
+          <ion-select [(ngModel)]="selectedUsuario.tipoUsuario" name="tipoUsuario" required>
+            <ion-select-option value="USER">USER</ion-select-option>
+            <ion-select-option value="ADMIN">ADMIN</ion-select-option>
+            <ion-select-option value="EMPRESA">EMPRESA</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelUpdateUser()">Cancelar</ion-button>
+      </form>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let usuario of usuarios">
+        <ion-label>{{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.email }} - {{ usuario.telefono }}</ion-label>
+        <ion-button (click)="showUpdateUserForm(usuario)">Modificar</ion-button>
+        <ion-button [color]="usuario.deleted ? 'danger' : 'success'" (click)="toggleUsuarioStatus(usuario)">
+          {{ usuario.deleted ? 'Desactivado' : 'Activado' }}
+        </ion-button>
+        <ion-button color="warning" (click)="resetPassword(usuario.id)">Restablecer Contraseña</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="currentView === 'empresas'">
+    <div style="text-align: center;">
+      <ion-button (click)="showAddEmpresaForm()">Añadir Empresa</ion-button>
+    </div>
+    <div *ngIf="showEmpresaForm">
+      <form (submit)="addEmpresa()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="newEmpresa.nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input [(ngModel)]="newEmpresa.direccion" name="direccion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input [(ngModel)]="newEmpresa.telefono" name="telefono" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input [(ngModel)]="newEmpresa.email" name="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Tipo</ion-label>
+          <ion-select [(ngModel)]="newEmpresa.tipo" name="tipo" required>
+            <ion-select-option value="CLINICA">CLINICA</ion-select-option>
+            <ion-select-option value="REFUGIO">REFUGIO</ion-select-option>
+            <ion-select-option value="HOSPITAL">HOSPITAL</ion-select-option>
+            <ion-select-option value="PROTECTORA">PROTECTORA</ion-select-option>
+            <ion-select-option value="RESERVA">RESERVA</ion-select-option>
+            <ion-select-option value="ACUARIO">ACUARIO</ion-select-option>
+            <ion-select-option value="OTRO">OTRO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">URL Web</ion-label>
+          <ion-input [(ngModel)]="newEmpresa.url_web" name="url_web"></ion-input>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelAddEmpresa()">Cancelar</ion-button>
+      </form>
+    </div>
+    <div *ngIf="showUpdateEmpresaForm">
+      <form (submit)="updateEmpresa()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="selectedEmpresa.nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Dirección</ion-label>
+          <ion-input [(ngModel)]="selectedEmpresa.direccion" name="direccion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input [(ngModel)]="selectedEmpresa.telefono" name="telefono" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input [(ngModel)]="selectedEmpresa.email" name="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Tipo</ion-label>
+          <ion-select [(ngModel)]="selectedEmpresa.tipo" name="tipo" required>
+            <ion-select-option value="CLINICA">CLINICA</ion-select-option>
+            <ion-select-option value="REFUGIO">REFUGIO</ion-select-option>
+            <ion-select-option value="HOSPITAL">HOSPITAL</ion-select-option>
+            <ion-select-option value="PROTECTORA">PROTECTORA</ion-select-option>
+            <ion-select-option value="RESERVA">RESERVA</ion-select-option>
+            <ion-select-option value="ACUARIO">ACUARIO</ion-select-option>
+            <ion-select-option value="OTRO">OTRO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">URL Web</ion-label>
+          <ion-input [(ngModel)]="selectedEmpresa.url_web" name="url_web"></ion-input>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelUpdateEmpresa()">Cancelar</ion-button>
+      </form>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let empresa of empresas">
+        <ion-label>{{ empresa.nombre }} - {{ empresa.direccion }} - {{ empresa.telefono }}</ion-label>
+        <ion-button (click)="displayUpdateEmpresaForm(empresa)">Modificar</ion-button>
+        <ion-button [color]="empresa.deleted ? 'danger' : 'success'" (click)="toggleEmpresaStatus(empresa)">
+          {{ empresa.deleted ? 'Desactivado' : 'Activado' }}
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="currentView === 'animales'">
+    <div style="text-align: center;">
+      <ion-button (click)="showAddAnimalForm()">Añadir Animal</ion-button>
+    </div>
+    <div *ngIf="showAnimalForm">
+      <form (submit)="addAnimal()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="newAnimal.nombre_comun" name="nombre_comun" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Especie</ion-label>
+          <ion-input [(ngModel)]="newAnimal.especie" name="especie" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-input [(ngModel)]="newAnimal.descripcion" name="descripcion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Estado de Conservación</ion-label>
+          <ion-select [(ngModel)]="newAnimal.estado_conservacion" name="estado_conservacion" required>
+            <ion-select-option value="EXTINTO">EXTINTO</ion-select-option>
+            <ion-select-option value="BAJO_RIESGO">BAJO RIESGO</ion-select-option>
+            <ion-select-option value="PELIGRO_EXTINCION">PELIGRO DE EXTINCION</ion-select-option>
+            <ion-select-option value="SIN_RIESGO">SIN RIESGO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Familia</ion-label>
+          <ion-select [(ngModel)]="newAnimal.familia" name="familia" required>
+            <ion-select-option value="MAMIFERO">MAMIFERO</ion-select-option>
+            <ion-select-option value="REPTIL">REPTIL</ion-select-option>
+            <ion-select-option value="ANFIBIO">ANFIBIO</ion-select-option>
+            <ion-select-option value="AVES">AVES</ion-select-option>
+            <ion-select-option value="PECES">PECES</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelAddAnimal()">Cancelar</ion-button>
+      </form>
+    </div>
+    <div *ngIf="showUpdateAnimalForm">
+      <form (submit)="updateAnimal()">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="selectedAnimal.nombre_comun" name="nombre_comun" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Especie</ion-label>
+          <ion-input [(ngModel)]="selectedAnimal.especie" name="especie" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-input [(ngModel)]="selectedAnimal.descripcion" name="descripcion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Estado de Conservación</ion-label>
+          <ion-select [(ngModel)]="selectedAnimal.estado_conservacion" name="estado_conservacion" required>
+            <ion-select-option value="EXTINTO">EXTINTO</ion-select-option>
+            <ion-select-option value="BAJO_RIESGO">BAJO RIESGO</ion-select-option>
+            <ion-select-option value="PELIGRO_EXTINCION">PELIGRO DE EXTINCION</ion-select-option>
+            <ion-select-option value="SIN_RIESGO">SIN RIESGO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Familia</ion-label>
+          <ion-select [(ngModel)]="selectedAnimal.familia" name="familia" required>
+            <ion-select-option value="MAMIFERO">MAMIFERO</ion-select-option>
+            <ion-select-option value="REPTIL">REPTIL</ion-select-option>
+            <ion-select-option value="ANFIBIO">ANFIBIO</ion-select-option>
+            <ion-select-option value="AVES">AVES</ion-select-option>
+            <ion-select-option value="PECES">PECES</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelUpdateAnimal()">Cancelar</ion-button>
+      </form>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let animal of animales">
+        <ion-label>{{ animal.nombre_comun }} - {{ animal.especie }} - {{ animal.familia }}</ion-label>
+        <ion-button (click)="displayUpdateAnimalForm(animal)">Modificar</ion-button>
+        <ion-button [color]="animal.deleted ? 'danger' : 'success'" (click)="toggleAnimalStatus(animal)">
+          {{ animal.deleted ? 'Desactivado' : 'Activado' }}
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="currentView === 'rescates'">
+    <div *ngIf="showUpdateRescateForm">
+      <form (submit)="updateRescate()">
+        <ion-item>
+          <ion-label position="floating">Empresa</ion-label>
+          <ion-select [(ngModel)]="selectedRescate.empresaId" name="empresaId" required>
+            <ion-select-option *ngFor="let empresa of empresas" [value]="empresa.id">{{ empresa.nombre }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Usuario</ion-label>
+          <ion-select [(ngModel)]="selectedRescate.usuarioId" name="usuarioId" required>
+            <ion-select-option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nombre }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Animal</ion-label>
+          <ion-select [(ngModel)]="selectedRescate.animalId" name="animalId" required>
+            <ion-select-option *ngFor="let animal of animales" [value]="animal.id">{{ animal.nombre_comun }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Ubicación</ion-label>
+          <ion-input [(ngModel)]="selectedRescate.ubicacion" name="ubicacion" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Estado Rescate</ion-label>
+          <ion-select [(ngModel)]="selectedRescate.estadoRescate" name="estadoRescate" required>
+            <ion-select-option value="EN_PROCESO">EN PROCESO</ion-select-option>
+            <ion-select-option value="FINALIZADO">FINALIZADO</ion-select-option>
+            <ion-select-option value="DESCONOCIDO">DESCONOCIDO</ion-select-option>
+            <ion-select-option value="NO_ASIGNADO">NO ASIGNADO</ion-select-option>
+            <ion-select-option value="ASIGNADO">ASIGNADO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Estado Animal</ion-label>
+          <ion-select [(ngModel)]="selectedRescate.estadoAnimal" name="estadoAnimal" required>
+            <ion-select-option value="LEVE">LEVE</ion-select-option>
+            <ion-select-option value="MODERADO">MODERADO</ion-select-option>
+            <ion-select-option value="GRAVE">GRAVE</ion-select-option>
+            <ion-select-option value="FALLECIDO">FALLECIDO</ion-select-option>
+            <ion-select-option value="DESCONOCIDO">DESCONOCIDO</ion-select-option>
+            <ion-select-option value="SANO">SANO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Fecha Rescate</ion-label>
+          <ion-input [(ngModel)]="selectedRescate.fechaRescate" name="fechaRescate" type="date" required></ion-input>
+        </ion-item>
+        <ion-button type="submit">Guardar</ion-button>
+        <ion-button color="danger" (click)="cancelUpdateRescate()">Cancelar</ion-button>
+      </form>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let rescate of rescates">
+        <ion-label>
+          <div><strong>Nombre Empresa:</strong> {{ rescate.nombreEmpresa }}</div>
+          <div><strong>Nombre Usuario:</strong> {{ rescate.nombreUsuario }}</div>
+          <div><strong>Nombre Animal:</strong> {{ rescate.nombreAnimal }}</div>
+          <div><strong>Ubicación:</strong> {{ rescate.ubicacion }}</div>
+          <div><strong>Estado Rescate:</strong> {{ rescate.estadoRescate }}</div>
+          <div><strong>Estado Animal:</strong> {{ rescate.estadoAnimal }}</div>
+          <div><strong>Fecha Rescate:</strong> {{ rescate.fechaRescate }}</div>
+        </ion-label>
+        <ion-button (click)="displayUpdateRescateForm(rescate)">Modificar</ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

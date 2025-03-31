@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AnimaliaApplication<Animalia>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.animalia.spring.AnimaliaApplication",
+            "projectName": "Animalia",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" style=" position: absolute;"></ion-back-button>
+    </ion-buttons>
+    <ion-title  class="ion-text-center" style="margin-left: 0px; margin-right: 20px;">Mapa</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="!mapInitialized"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Contenedor del mapa -->
+<ion-content>
+  <div  id="map"></div>
+  <div *ngIf="!mapInitialized" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <p>El mapa se está cargando, por favor espere...</p>
+  </div>
+</ion-content>

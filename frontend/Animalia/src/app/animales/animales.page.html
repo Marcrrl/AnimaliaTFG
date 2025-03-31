@@ -1,0 +1,152 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" shape="round" color="medium" (click)="haciaMapa('animales')">
+      <ion-icon name="map" style="position: absolute; font-size: 32px"></ion-icon>
+    </ion-button>
+    <ion-title class="ion-text-center" style="margin-left: 0px; margin-right: 20px">Animales</ion-title>
+    <ion-button slot="end" fill="clear" shape="round" color="medium" expand="block"
+      (click)="isMenuOpen ? closeEndMenu() : openEndMenu()">
+      <ion-icon [name]="isMenuOpen ? 'close' : 'call'" style="position: absolute; font-size: 32px"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-menu side="end" contentId="main-content" (ionDidOpen)="openEndMenu()" (ionDidClose)="closeEndMenu()"
+  swipeGesture="true" menuId="end">
+  <ion-header>
+    <ion-toolbar>
+      <p style="font-size: 20px" slot="start" class="mb-0 ms-2">
+        Teléfonos de Emergencia
+      </p>
+      <ion-buttons slot="end">
+        <ion-button (click)="closeEndMenu()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-item (click)="makeCall('112')" button="true" class="mt-2">
+      <ion-icon name="call" style="font-size: 28px" slot="end" class="mt-0"></ion-icon>
+      <ion-thumbnail slot="start" class="mt-0">
+        <ion-img src="../../assets/img/emergencias.png" alt="Emergencias"></ion-img>
+      </ion-thumbnail>
+      <div>
+        <ion-label>
+          <h3><strong>Emergencias</strong></h3>
+          <h5>112</h5>
+        </ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item (click)="makeCall('062')" class="mt-2">
+      <ion-icon name="call" style="font-size: 28px" slot="end" class="mt-0"></ion-icon>
+      <ion-thumbnail slot="start" class="mt-0">
+        <ion-img src="../../assets/img/seprona.jpg" alt="Seprona"></ion-img>
+      </ion-thumbnail>
+      <div>
+        <ion-label>
+          <h3><strong>Seprona</strong></h3>
+          <h5>062</h5>
+        </ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item (click)="makeCall('092')" class="mt-2">
+      <ion-icon name="call" style="font-size: 28px" slot="end" class="mt-0"></ion-icon>
+      <ion-thumbnail slot="start" class="mt-0">
+        <ion-img src="../../assets/img/policia_local.jpg" alt="local"></ion-img>
+      </ion-thumbnail>
+      <div>
+        <ion-label>
+          <h3><strong>Policía Local</strong></h3>
+          <h5>092</h5>
+        </ion-label>
+      </div>
+    </ion-item>
+
+    <ion-item (click)="makeCall('936245538')" class="mt-2">
+      <ion-icon name="call" style="font-size: 28px" slot="end" class="mt-0"></ion-icon>
+      <ion-thumbnail slot="start" class="mt-0">
+        <ion-img src="../../assets/img/faada.png" alt="FAADA"></ion-img>
+      </ion-thumbnail>
+      <div>
+        <ion-label>
+          <h3><strong>FAADA</strong></h3>
+          <h5>936 24 55 38</h5>
+        </ion-label>
+      </div>
+    </ion-item>
+  </ion-content>
+</ion-menu>
+
+<ion-content [fullscreen]="true" color="light" id="main-content" class="d-flex justify-content-center">
+  <ion-searchbar class="sticky-top" [debounce]="1000" (ionInput)="handleInput($event)"
+    (click)="handleSearchbarClick()"></ion-searchbar>
+
+  <ion-accordion-group expand="inset">
+    <ion-accordion value="first">
+      <ion-item slot="header" class="caracteristicas" [ngClass]="'selected'">
+        <ion-label>Categorías</ion-label>
+      </ion-item>
+
+      <div class="ion-padding p-0 m-0" slot="content">
+        <ion-item id="elementos">
+          <ion-list class="d-flex flex-column row w-100">
+            <ion-item class="w-100 m-0 p-0" lines="none">
+              <ion-button (click)="cambioFamilia('MAMIFERO')" shape="round"
+                class="col w-100 h-75 animal_button fs-6 fw-bold" fill="outline"
+                [ngClass]="{'selected': isFamiliaSelected('MAMIFERO')}">Mamíferos</ion-button>
+              <ion-button (click)="cambioFamilia('AVES')" shape="round"
+                class="col w-100 h-75 animal_button fs-6 fw-bold" fill="outline"
+                [ngClass]="{'selected': isFamiliaSelected('AVES')}">Aves</ion-button>
+            </ion-item>
+
+            <ion-item class="w-100 m-0 p-0" lines="none">
+              <ion-button (click)="cambioFamilia('ANFIBIO')" shape="round"
+                class="col w-100 h-75 animal_button fs-6 fw-bold" fill="outline"
+                [ngClass]="{'selected': isFamiliaSelected('ANFIBIO')}">Anfíbios</ion-button>
+              <ion-button (click)="cambioFamilia('REPTIL')" shape="round"
+                class="col w-100 h-75 animal_button fs-6 fw-bold" fill="outline"
+                [ngClass]="{'selected': isFamiliaSelected('REPTIL')}">Reptiles</ion-button>
+            </ion-item>
+
+            <ion-item class="w-100 m-0 p-0" lines="none">
+              <ion-button (click)="cambioFamilia('PECES')" shape="round"
+                class="col w-100 h-75 animal_button fs-6 fw-bold" fill="outline"
+                [ngClass]="{'selected': isFamiliaSelected('PECES')}">Marinos</ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-item>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-list id="lista">
+    <ion-item *ngFor="let animal of paginaActual;" button details="false" (click)="haciaDatosAnimal(animal.id)"
+      class="w-100 h-75">
+      <ion-thumbnail slot="start">
+        <ion-img [src]="getImagen(animal)" [alt]="animal.nombre_comun"></ion-img>
+      </ion-thumbnail>
+      <ion-label class="m-0">
+        <p class="fs-3 fw-bold mt-2 mb-1">{{ animal.nombre_comun }}</p>
+        <!--<p><strong>Especie:</strong> {{ animal.especie }}</p>-->
+        <p class="">
+          Estado de Conservación:<strong>
+            {{ animal.estado_conservacion }}</strong>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="prevPage()" [disabled]="currentPage === 0">Anterior</ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Página {{ currentPagehtml }} de {{ totalPages }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="nextPage()" [disabled]="currentPage+1 >= totalPages">Siguiente</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

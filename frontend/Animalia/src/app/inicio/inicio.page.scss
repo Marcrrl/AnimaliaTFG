@@ -1,0 +1,79 @@
+.custom-toolbar {
+    position: relative;
+    ion-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.hero-section {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    text-align: center;
+    color: #333;
+    padding: 20px;
+}
+
+.hero-section video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.hero-section .content {
+    z-index: 1;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.678);
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.hero-section .login-section {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.hero-section .buttons-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.hero-section ion-button {
+    margin-top: 10px; 
+    text-shadow: none;
+    background-color: #28a745; 
+    --background: #28a745;
+    border-radius: 20px;
+}
+
+@font-face {
+    font-family: 'Renasci';
+    src: url('../../assets/fonts/Renasci.ttf') format('truetype');
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-family: 'Renasci', sans-serif;
+    color: #4CAF50;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}

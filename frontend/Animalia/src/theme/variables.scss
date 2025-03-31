@@ -1,0 +1,98 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+$tabs-color: #ffffff; // White color for the text/icons in the tabs
+
+// Apply the color to the tabs
+/*ion-tabs {
+  background-color: $tabs-background;
+  color: $tabs-color;
+
+  ion-tab-button {
+    background-color: $tabs-background;
+    color: $tabs-color;
+
+    &.tab-selected {
+      background-color: darken($tabs-background, 10%);
+      color: $tabs-color;
+    }
+  }
+}*/
+
+$color-selected: #28a745; // Green color for the selected tab icon
+$color-hover: #006417; // Green color for the hover effect on the tab icon
+
+// Apply the color to the selected tab icon
+ion-tabs {
+    ion-tab-button {
+      &.tab-selected {
+        color: $color-selected;
+  
+        ion-icon {
+          color: $color-selected;
+        }
+      }
+  
+      &:hover {
+        ion-label{
+            color: $color-hover;
+        }
+        ion-icon {
+          color: $color-hover;
+        }
+      }
+    }
+
+    ion-input {
+        &.searchbar-input {
+          --border-color:  #28a745;
+        }
+    
+        &:focus-within {
+          --border-color: #28a745 !important; // Green border when focused
+        }
+        ion-icon {
+          color: $color-selected;
+        }
+      }
+
+    .animal_button {
+      color: $color-hover;
+        --border-color:#006417;
+        --background-activated:#28a745;
+    
+        &:hover {
+          --background-hover: #006417 ;
+          --border-color: #28a745;
+        }
+
+        &.selected {
+          
+          --background-activated: #28a745;
+          --border-color: #006417;
+          --background: #28a745;
+          color: white;
+        }
+      }
+      .caracteristicas{
+          color: white;
+          --background: #28a745;
+          --border-color: #006417;
+
+          &selected{
+            --background: #ffffff;
+          }
+
+          &:focus{
+            color: white;
+          }
+      }
+
+      /*ion-header {
+        padding-top: 8%;
+      }*/
+      
+
+
+  }
+
+ 
