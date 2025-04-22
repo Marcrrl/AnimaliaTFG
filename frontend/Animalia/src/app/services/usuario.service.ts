@@ -29,6 +29,10 @@ export class UsuarioService {
     return this.http.get<any[]>(`${environment.apiUrl}/fotos/usuario/${userId}/base64`);
   }
 
+  getUsuariosOrdenadosPorRescates(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/ordenados-por-rescates`);
+  }
+
   subirImagenPerfil(file: File, headers: HttpHeaders): Observable<any> {
     const formData = new FormData();
     formData.append('imagen', file);

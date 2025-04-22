@@ -3,6 +3,8 @@ import { UsuarioService } from '../services/usuario.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MenuController, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonTitle, IonToolbar, IonTab } from '@ionic/angular';
 import { environment } from '../../environments/environment';
+import { RescatesService } from '../services/rescates.service';
+import { FotosService } from '../services/fotos.service';
 
 @Component({
   selector: 'app-perfil',
@@ -17,12 +19,30 @@ export class PerfilPage implements OnInit {
   usuarioOriginal: any;
   mostrarCampoContrasena: boolean = false;
   imagenesUsuario: any[] = [];
+  historialRescates: any[] = [];
+  vistaActual: string = 'Perfil';
 
-  constructor(@Inject(UsuarioService) private usuarioService: UsuarioService, private http: HttpClient) {}
+  constructor(@Inject(UsuarioService) private usuarioService: UsuarioService, private rescateService: RescatesService,private fotosService:FotosService, private http: HttpClient) { }
 
   cerrarSesion() {
     sessionStorage.clear();
     window.location.href = '/Inicio';
+  }
+
+  getAddress(lat: number, long: number): Promise<string> {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`;
+
+    return this.http.get(url).toPromise().then((response: any) => {
+      if (response && response.address) {
+        return response.address.road || 'Dirección no encontrada';
+      } else {
+        return 'Dirección no encontrada';
+      }
+    });
+  }
+  getImagen(foto: any): string {
+    //console.log('Foto:', foto.url_foto);
+    return this.fotosService.obtenerImagenUrl(foto.url_foto);
   }
 
   ngOnInit() {
@@ -35,6 +55,31 @@ export class PerfilPage implements OnInit {
         this.actualizarBadgeRescates(this.usuario.cantidad_rescates);
       });
       this.cargarImagenesUsuario(userId);
+
+      this.rescateService.getRescatesPorUsuario(Number(userId)).subscribe((rescates: any[]) => {
+        this.historialRescates = rescates;
+
+        // Iterar sobre los rescates y obtener la dirección para cada ubicación
+        const promesas = this.historialRescates.map(async (rescate) => {
+          const coordenadas = rescate.ubicacion.split('|');
+          console.log(coordenadas[0]);
+          console.log(coordenadas[1]);
+          const lat = parseFloat(coordenadas[0]);
+          const long = parseFloat(coordenadas[1]);
+
+          // Obtener la dirección y agregarla al objeto rescate
+          rescate.ubicacion = await this.getAddress(lat, long);
+        });
+
+        // Esperar que todas las promesas terminen
+        Promise.all(promesas).then(() => {
+          console.log(this.historialRescates); // Aquí ya tendrás las direcciones en cada rescate
+        }).catch(error => {
+          console.error('Error obteniendo direcciones', error);
+        });
+        console.log(this.historialRescates);
+      });
+
     } else {
       console.error('No se encontró el id del usuario');
     }

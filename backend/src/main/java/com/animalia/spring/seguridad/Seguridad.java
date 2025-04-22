@@ -70,7 +70,7 @@ public class Seguridad {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*", "/frontend", "172.21.0.3")//cambiar a contenedor de la api de frotend
+                        .allowedOriginPatterns("*", "/frontend", "172.21.0.3")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

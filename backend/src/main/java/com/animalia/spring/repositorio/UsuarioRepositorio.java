@@ -27,4 +27,8 @@ public interface UsuarioRepositorio extends JpaRepository<Usuarios, Long> {
 
     @Query("SELECT u FROM Usuarios u WHERE u.id = :id AND u.deleted = false")
     Optional<Usuarios> findByIdActive(Long id);
+
+    @Query("SELECT u FROM Usuarios u WHERE u.deleted = false ORDER BY u.cantidad_rescates DESC")
+    List<Usuarios> findAllOrderByCantidadRescatesDesc();
+
 }

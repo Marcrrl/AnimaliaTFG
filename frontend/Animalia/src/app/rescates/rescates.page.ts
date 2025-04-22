@@ -77,7 +77,9 @@ export class RescatesPage implements OnInit {
             fechaRescate: rescate.fechaRescate
           };
 
-          const url = `${environment.apiUrl}/rescates/${rescateId}?empresaId=${empresa.id}&usuarioId=${usuarioId}`;
+          //const url = `${environment.apiUrl}/rescates/${rescateId}?empresaId=${empresa.id}&usuarioId=${usuarioId}`;
+
+          const url = `${environment.apiUrl}/rescates/${rescateId}?empresaId=${empresa.id}`;
 
           this.http.put(url, body).subscribe(() => {
             location.reload();

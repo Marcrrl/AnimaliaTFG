@@ -19,6 +19,10 @@ export class RescatesService {
     return this.http.get<any>(`${this.apiUrl}/rescates/${id}/fotos`);
   }
 
+  getRescatesPorUsuario(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/rescates/usuario/${id}`);
+  }
+
   añadirRescate(rescate: any, headers: any) {
     console.log('Headers:', headers);
     console.log(rescate);

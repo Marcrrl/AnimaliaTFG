@@ -72,3 +72,18 @@ ion-button{
   --background: #4caf50;
   --color: white;
 }
+
+.foto-rescate {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.custom-segment {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  z-index: 10; /* Asegúrate de que esté por encima del contenido */
+  padding: 0 10px; /* Para dar algo de espacio alrededor del segmento */
+}

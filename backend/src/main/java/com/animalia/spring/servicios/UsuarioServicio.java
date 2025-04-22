@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.animalia.spring.entidades.Usuarios;
 import com.animalia.spring.entidades.DTO.UsuarioDTO;
@@ -109,5 +110,9 @@ public class UsuarioServicio {
             return userDtoConverter.convertUserEntityToUserDto(usuarioRepositorio.save(usuario));
         }
         return null;
+    }
+
+    public List<Usuarios> obtenerUsuariosOrdenadosPorCantidadRescates() {
+        return usuarioRepositorio.findAllOrderByCantidadRescatesDesc();
     }
 }

@@ -107,7 +107,7 @@ export class SignFormPage implements OnInit, AfterViewInit {
       password: this.password
     };
 
-    this.http.post<any>('http://52.232.4.28:9000/auth/login', loginRequest).subscribe(
+    this.http.post<any>('http://localhost:9000/auth/login', loginRequest).subscribe(
       response => {
         /*sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('rol', response.roles);*/

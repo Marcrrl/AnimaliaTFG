@@ -1,6 +1,6 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    
+
     <ion-tab-button *ngIf="!userRol" tab="Inicio" href="/Inicio">
       <ion-icon name="home"></ion-icon>
       <ion-label>Inicio</ion-label>
@@ -36,8 +36,8 @@
       <ion-label>Iniciar Sesión</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button
-      *ngIf="userRol == 'USER' ||  userRol == 'ADMIN' || userRol == 'EMPRESA'" tab="Perfil"href="/perfil">
+    <ion-tab-button *ngIf="userRol == 'USER' ||  userRol == 'ADMIN' || userRol == 'EMPRESA'" tab="Perfil"
+      href="/perfil">
       <ion-icon name="person"></ion-icon>
       <ion-label>Perfil</ion-label>
     </ion-tab-button>

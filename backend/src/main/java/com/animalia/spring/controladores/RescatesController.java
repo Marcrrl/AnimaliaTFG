@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.animalia.spring.Excepciones.RescateNoEcontrada;
 import com.animalia.spring.entidades.Fotos;
 import com.animalia.spring.entidades.Rescates;
+import com.animalia.spring.entidades.Usuarios;
 import com.animalia.spring.entidades.DTO.RescateDTO;
 import com.animalia.spring.entidades.DTO.RescateDetalleDTO;
 import com.animalia.spring.entidades.DTO.RescateCreacionDTO;
@@ -23,6 +24,7 @@ import com.animalia.spring.entidades.converter.RescateDetalleDtoConverter;
 import com.animalia.spring.entidades.converter.RescateCreacionDtoConverter;
 import com.animalia.spring.servicios.FotosServicio;
 import com.animalia.spring.servicios.RescatesServicio;
+import com.animalia.spring.servicios.UsuarioServicio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +39,8 @@ public class RescatesController {
 
     @Autowired
     private FotosServicio fotosServicio;
+    @Autowired
+    private UsuarioServicio usuariosServicio;
 
     @Autowired
     private RescateDtoConverter rescateDtoConverter;
@@ -133,6 +137,12 @@ public class RescatesController {
         if (rescateCreacionDTO.getAnimalId() == null || rescateCreacionDTO.getUsuarioId() == null) {
             return ResponseEntity.badRequest().build();
         }
+        Usuarios usuario = usuariosServicio.obtenerUsuarioPorId(rescateCreacionDTO.getUsuarioId());
+        if (usuario == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        usuario.setCantidad_rescates(usuario.getCantidad_rescates() + 1);
+        usuariosServicio.guardarUsuario(usuario);
         Rescates rescate = rescateCreacionDtoConverter.convertRescateCreacionDtoToRescateEntity(rescateCreacionDTO);
         rescate.setEmpresa(null);
         rescate.setFotos(null);
@@ -176,7 +186,8 @@ public class RescatesController {
 
     @PutMapping("/{id}/ubicacion-estado")
     @Operation(summary = "Actualizar la ubicación y el estado del animal de un rescate", description = "Actualizar la ubicación y el estado del animal de un rescate en el sistema")
-    public ResponseEntity<Rescates> actualizarUbicacionYEstadoAnimalRescate(@PathVariable long id, @RequestBody RescateUbicacionEstadoDTO rescateUbicacionEstadoDTO) {
+    public ResponseEntity<Rescates> actualizarUbicacionYEstadoAnimalRescate(@PathVariable long id,
+            @RequestBody RescateUbicacionEstadoDTO rescateUbicacionEstadoDTO) {
         Rescates rescate = rescatesServicio.obtenerRescatePorId(id);
         if (rescate != null) {
             rescate.setUbicacion(rescateUbicacionEstadoDTO.getUbicacion());
@@ -193,12 +204,12 @@ public class RescatesController {
         Rescates rescate = rescatesServicio.obtenerRescatePorId(id);
         if (rescate != null) {
             List<Fotos> fotos = fotosIds.stream()
-                .map(fotoId -> {
-                    Fotos foto = fotosServicio.obtenerFotoPorId(fotoId);
-                    foto.setRescate(rescate);
-                    return foto;
-                })
-                .collect(Collectors.toList());
+                    .map(fotoId -> {
+                        Fotos foto = fotosServicio.obtenerFotoPorId(fotoId);
+                        foto.setRescate(rescate);
+                        return foto;
+                    })
+                    .collect(Collectors.toList());
             rescate.setFotos(fotos);
             return ResponseEntity.ok(rescatesServicio.guardarRescate(rescate));
         } else {
@@ -228,6 +239,17 @@ public class RescatesController {
             return ResponseEntity.ok(rescate.getAnimal().getId());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    @Operation(summary = "Obtener rescates creados por un usuario", description = "Devuelve una lista de rescates creados por un usuario específico")
+    public ResponseEntity<List<Rescates>> obtenerRescatesPorUsuario(@PathVariable Long usuarioId) {
+        List<Rescates> rescates = rescatesServicio.obtenerRescatesPorUsuario(usuarioId);
+        if (rescates.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(rescates);
         }
     }
 }

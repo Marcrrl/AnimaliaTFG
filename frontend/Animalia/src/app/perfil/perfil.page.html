@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      Perfil
+      {{vistaActual}}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button *ngIf="camposActivos" (click)="guardarDatos()">
@@ -15,16 +15,29 @@
       <ion-button *ngIf="camposActivos" (click)="cancelarCambios()">
         <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!camposActivos" (click)="activarCampos()">
+      <ion-button *ngIf=" vistaActual== 'Perfil' && !camposActivos" (click)="activarCampos()">
         <ion-icon slot="icon-only" name="create"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+  <!-- Segmento para alternar entre Perfil e Historial -->
 
+<div class="custom-segment">
+    <ion-segment [(ngModel)]="vistaActual">
+      <ion-segment-button value="Perfil">
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="Historial de Rescates">
+        <ion-label>Historial de Rescates</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 <ion-content [fullscreen]="true">
 
-  <ion-modal [isOpen]="isModalOpen">
+  
+
+  <!-- <ion-modal [isOpen]="isModalOpen">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -40,72 +53,124 @@
         </ion-card>
       </ion-content>
     </ng-template>
-  </ion-modal>
-  <ion-content color="light" class="ion-text-center">
-    <div class="profile-container">
-      <div class="profile-image">
-        <img alt="Avatar" [src]="imagenPerfil" />
+  </ion-modal> -->
+
+  <ng-container *ngIf="vistaActual == 'Perfil'">
+    <ion-content color="light" class="ion-text-center">
+      <div class="profile-container">
+        <div class="profile-image">
+          <img alt="Avatar" [src]="imagenPerfil" />
+        </div>
+        <ion-button *ngIf="camposActivos" fill="clear" class="upload-button">
+          <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
+          <input type="file" (change)="subirImagen($event)" class="upload-input">
+        </ion-button>
+        <ion-badge color="success" class="rescues-badge">
+          {{ usuario?.cantidad_rescates }}
+        </ion-badge>
       </div>
-      <ion-button *ngIf="camposActivos" fill="clear" class="upload-button">
-        <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
-        <input type="file" (change)="subirImagen($event)" class="upload-input">
-      </ion-button>
-      <ion-badge color="success" class="rescues-badge">
-        {{ usuario?.cantidad_rescates }}
-      </ion-badge>
+
+      <ion-list [inset]="true">
+        <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-input id="nombre" labelPlacement="stacked" label="Nombre" [value]="usuario?.nombre"
+                  [disabled]="!camposActivos"></ion-input>
+              </ion-col>
+              <ion-col size="6">
+                <ion-input id="apellido" labelPlacement="stacked" label="Apellidos" [value]="usuario?.apellido"
+                  [disabled]="!camposActivos"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item>
+          <ion-input id="email" labelPlacement="stacked" label="Email" [value]="usuario?.email"
+            [disabled]="!camposActivos"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input id="telefono" labelPlacement="stacked" label="Teléfono" [value]="usuario?.telefono"
+            [disabled]="!camposActivos"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input id="direccion" labelPlacement="stacked" label="Dirección" [value]="usuario?.direccion"
+            [disabled]="!camposActivos"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="mostrarCampoContrasena">
+          <ion-input id="nuevaContrasena" labelPlacement="stacked" label="Nueva Contraseña" type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-button *ngIf="!mostrarCampoContrasena" color="warning" (click)="toggleCampoContrasena()">Cambiar
+        Contraseña</ion-button>
+      <ion-button *ngIf="mostrarCampoContrasena" color="danger" (click)="toggleCampoContrasena()">Cancelar</ion-button>
+      <ion-button *ngIf="mostrarCampoContrasena" color="success" (click)="confirmarCambioContrasena()">Confirmar Cambio
+        de
+        Contraseña</ion-button>
+    
+    <div class="mt-5">
+  <h1 class="text-success">Fotos del usuario</h1>
+      <ion-grid class="mt-5">
+        <ion-row>
+          <ion-col size="6" class="p-2" *ngFor="let imagen of imagenesUsuario">
+            <ion-card style="box-shadow: 0 4px 12px rgba(0, 248, 33, 0.5); border-radius: 12px; margin: 10px; overflow: hidden;">
+              <ion-img class="ion-padding" [src]="imagen.url" [alt]="imagen.descripcion || 'Imagen de usuario'"
+                style="object-fit: cover; width: 100%; height: 100%; border-radius: 8px;">
+              </ion-img>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        
+        
+        
+      </ion-grid>
     </div>
+  </ion-content>
+  </ng-container>
 
-    <ion-list [inset]="true">
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="6">
-              <ion-input id="nombre" labelPlacement="stacked" label="Nombre" [value]="usuario?.nombre"
-                [disabled]="!camposActivos"></ion-input>
-            </ion-col>
-            <ion-col size="6">
-              <ion-input id="apellido" labelPlacement="stacked" label="Apellidos" [value]="usuario?.apellido"
-                [disabled]="!camposActivos"></ion-input>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-      <ion-item>
-        <ion-input id="email" labelPlacement="stacked" label="Email" [value]="usuario?.email"
-          [disabled]="!camposActivos"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input id="telefono" labelPlacement="stacked" label="Teléfono" [value]="usuario?.telefono"
-          [disabled]="!camposActivos"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input id="direccion" labelPlacement="stacked" label="Dirección" [value]="usuario?.direccion"
-          [disabled]="!camposActivos"></ion-input>
-      </ion-item>
-      <ion-item *ngIf="mostrarCampoContrasena">
-        <ion-input id="nuevaContrasena" labelPlacement="stacked" label="Nueva Contraseña" type="password"></ion-input>
-      </ion-item>
-    </ion-list>
 
-    <ion-button *ngIf="!mostrarCampoContrasena" color="warning" (click)="toggleCampoContrasena()">Cambiar
-      Contraseña</ion-button>
-    <ion-button *ngIf="mostrarCampoContrasena" color="danger" (click)="toggleCampoContrasena()">Cancelar</ion-button>
-    <ion-button *ngIf="mostrarCampoContrasena" color="success" (click)="confirmarCambioContrasena()">Confirmar Cambio de
-      Contraseña</ion-button>
+  <ng-container *ngIf="vistaActual === 'Historial de Rescates'">
+    <ion-card *ngIf="historialRescates.length > 0">
+      <ion-card-header>
+        <ion-card-title>Historial de Rescates</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let rescate of historialRescates">
+            <ion-label>
+              <h2>Rescate de {{ rescate.animal.nombre_comun }}</h2>
+              <p>Fecha: {{ rescate.fecha_rescate | date:'short' }}</p>
+              <p>Ubicación: {{ rescate.ubicacion }}</p>
+              <p>Estado:
+                <ion-badge color="success" *ngIf="rescate.estado_rescate === 'FINALIZADO'">Finalizado ✔</ion-badge>
+                <ion-badge color="warning" *ngIf="rescate.estado_rescate === 'NO_ASIGNADO'">En Proceso ⏳</ion-badge>
+                <ion-badge color="secondary" *ngIf="rescate.estado_rescate === 'DESCONOCIDO'">Desconocido ❓</ion-badge>
+                <ion-badge color="primary" *ngIf="rescate.estado_rescate === 'ASIGNADO'">Asignado 🟢</ion-badge>
+              </p>
+            </ion-label>
+            <!-- Contenedor de las fotos -->
+            <ion-row slot="end">
+              <ion-col *ngFor="let foto of rescate.fotos" size="auto">
+                <img [src]="getImagen(foto)" [alt]="foto.descripcion" class="foto-rescate">
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="!historialRescates?.length">
+      <ion-card-content class="ion-text-center">
+        <p>No tienes rescates registrados.</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6" style="padding: 2px;" *ngFor="let imagen of imagenesUsuario">
-          <ion-card style="margin: 0;">
-            <ion-img [src]="imagen.url" [alt]="imagen.descripcion || 'Imagen de usuario'"></ion-img>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
 
-    <!--<ion-button (click)="setOpen(true)" expand="block" shape="round" style="margin-top: 20px;">
+
+
+  <!--<ion-button (click)="setOpen(true)" expand="block" shape="round" style="margin-top: 20px;">
       Ver más fotos
     </ion-button>-->
 
-  </ion-content>
 </ion-content>

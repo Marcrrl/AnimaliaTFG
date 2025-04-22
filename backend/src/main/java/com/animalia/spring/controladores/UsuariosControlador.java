@@ -150,4 +150,9 @@ public class UsuariosControlador {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("Duplicate entry: " + e.getMostSpecificCause().getMessage());
     }
+
+    @GetMapping("/ordenados-por-rescates")
+    public List<Usuarios> obtenerUsuariosOrdenadosPorRescates() {
+        return usuariosServicio.obtenerUsuariosOrdenadosPorCantidadRescates();
+    }
 }
