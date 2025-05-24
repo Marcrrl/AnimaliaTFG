@@ -115,4 +115,14 @@ public class UsuarioServicio {
     public List<Usuarios> obtenerUsuariosOrdenadosPorCantidadRescates() {
         return usuarioRepositorio.findAllOrderByCantidadRescatesDesc();
     }
+
+    public UsuarioDTO agregarExperiencia(long id, int experiencia) {
+    Usuarios usuario = usuarioRepositorio.findById(id).orElse(null);
+    if (usuario != null) {
+        usuario.setExperiencia(usuario.getExperiencia() + experiencia);
+        usuarioRepositorio.save(usuario);
+        return userDtoConverter.convertUserEntityToUserDto(usuario);
+    }
+    return null;
+}
 }

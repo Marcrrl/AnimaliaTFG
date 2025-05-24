@@ -69,7 +69,8 @@ public class UserDtoConverter {
                 user.getTipoUsuario(),
                 user.getFecha_registro(),
                 user.getCantidad_rescates(),
-				user.isDeleted()
+				user.isDeleted(),
+                user.getExperiencia()
         );
     }
 

@@ -46,14 +46,17 @@ export class TabsPage implements OnInit {
       this.tabs = [
         { title: 'Animales', route: '/Animales' },
         { title: 'Camara', route: '/Camara' },
+        { title: 'Juegos', route: '/Juegos' },
       ];
     } else if (rol === 'USER') {
       this.tabs = [
         { title: 'Animales', route: '/Animales' },
+        { title: 'Juegos', route: '/Juegos' },
       ];
     } else if (rol === 'EMPRESA') {
       this.tabs = [
         { title: 'Camara', route: '/Camara' },
+        { title: 'Juegos', route: '/Juegos' },
       ];
     } else {
       this.tabs = [

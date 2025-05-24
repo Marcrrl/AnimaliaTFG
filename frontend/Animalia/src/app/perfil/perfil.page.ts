@@ -221,4 +221,19 @@ export class PerfilPage implements OnInit {
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
+
+  getNivel(): number {
+    const experiencia = this.usuario?.experiencia || 0;
+    return Math.floor(experiencia / 100);
+  }
+
+  getExpEnNivel(): number {
+    const experiencia = this.usuario?.experiencia || 0;
+    return experiencia % 100;
+  }
+
+  getPorcentajeExp(): number {
+    const expEnNivel = this.getExpEnNivel();
+    return expEnNivel;
+  }
 }

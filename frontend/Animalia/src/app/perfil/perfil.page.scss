@@ -60,7 +60,7 @@ $primary: #4caf50;
   left: 0;
 }
 
-.rescues-badge {
+.exp {
   position: absolute;
   top: 0;
   right: 0;
@@ -84,6 +84,131 @@ ion-button{
   position: sticky;
   top: 0;
   overflow: hidden;
-  z-index: 10; /* Asegúrate de que esté por encima del contenido */
-  padding: 0 10px; /* Para dar algo de espacio alrededor del segmento */
+  z-index: 10;
+  padding: 0 10px;
+}
+
+.experience-container {
+  margin: 20px auto;
+  max-width: 300px;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(209, 171, 113, 0.1), rgba(142, 161, 155, 0.1));
+  border-radius: 15px;
+  border: 2px solid #d1ab71;
+  box-shadow: 0 4px 12px rgba(209, 171, 113, 0.3);
+}
+
+.level-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.level-badge {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #d1ab71, #c19b61);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(209, 171, 113, 0.4);
+}
+
+.level-icon {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #ffd700;
+}
+
+.level-number {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.exp-text {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #8ea19b;
+  font-weight: 500;
+}
+
+.current-exp {
+  color: #d1ab71;
+  font-weight: bold;
+}
+
+.separator {
+  margin: 0 4px;
+  color: #8ea19b;
+}
+
+.max-exp {
+  color: #8ea19b;
+}
+
+.progress-bar-container {
+  margin-top: 8px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: rgba(142, 161, 155, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(209, 171, 113, 0.3);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8ea19b, #d1ab71);
+  border-radius: 10px;
+  transition: width 0.8s ease-in-out;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .experience-container {
+    margin: 15px 10px;
+    max-width: none;
+  }
+  
+  .level-badge {
+    padding: 6px 10px;
+  }
+  
+  .level-icon {
+    font-size: 16px;
+  }
+  
+  .level-number {
+    font-size: 14px;
+  }
+  
+  .exp-text {
+    font-size: 12px;
+  }
 }

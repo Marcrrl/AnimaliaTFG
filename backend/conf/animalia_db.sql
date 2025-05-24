@@ -24,7 +24,8 @@ CREATE TABLE Usuarios (
     tipoUsuario ENUM('admin','usuario') DEFAULT 'usuario',
     url_foto_perfil TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    cantidad_rescates INT DEFAULT 0 
+    cantidad_rescates INT DEFAULT 0,
+    experiencia INT DEFAULT 0
 );
 
 -- Tabla de Animales

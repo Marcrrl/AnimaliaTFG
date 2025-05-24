@@ -155,4 +155,15 @@ public class UsuariosControlador {
     public List<Usuarios> obtenerUsuariosOrdenadosPorRescates() {
         return usuariosServicio.obtenerUsuariosOrdenadosPorCantidadRescates();
     }
+
+    @Operation(summary = "Agregar experiencia a usuario", description = "Agregar experiencia a un usuario al completar un juego")
+    @PostMapping("/{id}/agregar-experiencia")
+    public ResponseEntity<UsuarioDTO> agregarExperiencia(@PathVariable long id, @RequestBody int experiencia) {
+        UsuarioDTO usuarioActualizado = usuariosServicio.agregarExperiencia(id, experiencia);
+        if (usuarioActualizado != null) {
+            return ResponseEntity.ok(usuarioActualizado);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

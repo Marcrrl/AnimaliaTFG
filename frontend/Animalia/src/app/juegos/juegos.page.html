@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-text-center custom-toolbar">
+    <ion-title>Juegos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <style>
+    *,
+    *::before,
+    *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .game-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #040218;
+    }
+
+    #game-container {
+        width: 100%;
+        height: 100%;
+    }
+  </style>
+  
+  <div *ngIf="!errorCargando" class="game-wrapper">
+    <div id="game-container"></div>
+  </div>
+  
+  <div *ngIf="errorCargando" class="error-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Error al cargar el juego</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ errorCargando }}</p>
+        <p>Asegúrate de que los archivos estén correctamente copiados en la carpeta assets/juegos</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

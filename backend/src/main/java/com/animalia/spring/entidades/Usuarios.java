@@ -86,6 +86,9 @@ public class Usuarios implements UserDetails {
     @Column(nullable = true)
     private long cantidad_rescates;
 
+    @Column(nullable = false)
+    private int experiencia;
+
     @ManyToOne
     @JoinColumn(name = "id_empresas", nullable = true)
     @JsonBackReference

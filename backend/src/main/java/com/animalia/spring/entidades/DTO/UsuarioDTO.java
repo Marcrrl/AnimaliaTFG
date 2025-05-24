@@ -23,4 +23,5 @@ public class UsuarioDTO {
     private LocalDate fecha_registro;
     private long cantidad_rescates;
     private boolean deleted;
+    private int experiencia;
 }

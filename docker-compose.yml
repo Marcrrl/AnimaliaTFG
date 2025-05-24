@@ -2,55 +2,54 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.0
-    container_name: mysql_container
+    image: mysql:8
+    container_name: mysql
     restart: always
     environment:
       MYSQL_DATABASE: animaliadb
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     networks:
-      - backend_network
-    volumes:
-      - mysql_data:/var/lib/mysql
+      - backend_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    container_name: backend_container
+    container_name: backend
     depends_on:
-      - mysql
+      mysql:
+       condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/animaliadb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/animaliadb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 9000
     ports:
       - "9000:9000"
     networks:
-      - backend_network
-      - frontend_network
+      - backend_net
+      - frontend_net
 
   frontend:
     build:
       context: ./frontend/Animalia
-      dockerfile: Dockerfile
-    container_name: frontend_container
+    container_name: frontend
     depends_on:
       - backend
     ports:
-      - "80:80"
+      - "4200:80"
     networks:
-      - frontend_network
-
+      - frontend_net
 
 networks:
-  frontend_network:
-    driver: bridge
-  backend_network:
-    driver: bridge
-
-
-volumes:
-  mysql_data:
+  backend_net:
+  frontend_net:

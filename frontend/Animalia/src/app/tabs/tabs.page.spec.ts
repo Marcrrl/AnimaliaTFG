@@ -30,7 +30,6 @@ describe('TabsPage', () => {
     expect(component.tabs).toEqual([
       { title: 'animales', route: '/animales' },
       { title: 'Camara', route: '/Camara' },
-      // otros tabs para admin
     ]);
   });
 
@@ -39,7 +38,6 @@ describe('TabsPage', () => {
     component.ngOnInit();
     expect(component.tabs).toEqual([
       { title: 'animales', route: '/animales' },
-      // otros tabs para usuarios normales
     ]);
   });
 
@@ -48,7 +46,6 @@ describe('TabsPage', () => {
     component.ngOnInit();
     expect(component.tabs).toEqual([
       { title: 'Camara', route: '/Camara' },
-      // otros tabs para usuarios de empresa
     ]);
   });
 
@@ -57,36 +54,7 @@ describe('TabsPage', () => {
     component.ngOnInit();
     expect(component.tabs).toEqual([
       { title: 'animales', route: '/animales' },
-      // otros tabs para usuarios normales
     ]);
   });
-
-  /*it('should set tabs based on ADMIN role', () => {
-    document.cookie = 'rol=ADMIN'; // Simular la cookie de rol
-    component.ngOnInit();
-    expect(component.tabs).toEqual([
-      { title: 'Animales', route: '/animales' },
-      { title: 'Cámara', route: '/camara' },
-      // Otros tabs específicos para admin
-    ]);
-  });
-  
-  it('should set tabs based on USER role', () => {
-    document.cookie = 'rol=USER'; // Simular la cookie de rol
-    component.ngOnInit();
-    expect(component.tabs).toEqual([
-      { title: 'Animales', route: '/animales' },
-      // Otros tabs para usuarios normales
-    ]);
-  });
-  
-  it('should set tabs based on EMPRESA role', () => {
-    document.cookie = 'rol=EMPRESA'; // Simular la cookie de rol
-    component.ngOnInit();
-    expect(component.tabs).toEqual([
-      { title: 'Cámara', route: '/camara' },
-      // Otros tabs para empresa
-    ]);
-  });*/
   
 });

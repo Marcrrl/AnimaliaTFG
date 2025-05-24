@@ -36,6 +36,12 @@
       <ion-label>Iniciar Sesión</ion-label>
     </ion-tab-button>
 
+    <ion-tab-button *ngIf="userRol == 'USER' ||  userRol == 'ADMIN' || userRol == 'EMPRESA'" tab="Juegos"
+      href="/juegos">
+      <ion-icon name="game-controller"></ion-icon>
+      <ion-label>Juegos</ion-label>
+    </ion-tab-button>
+
     <ion-tab-button *ngIf="userRol == 'USER' ||  userRol == 'ADMIN' || userRol == 'EMPRESA'" tab="Perfil"
       href="/perfil">
       <ion-icon name="person"></ion-icon>
