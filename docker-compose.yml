@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mysql:
@@ -26,7 +26,7 @@ services:
     container_name: backend
     depends_on:
       mysql:
-       condition: service_healthy
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/animaliadb
       SPRING_DATASOURCE_USERNAME: user
